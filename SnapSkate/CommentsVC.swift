@@ -12,12 +12,12 @@ import Firebase
 class CommentsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableview: UITableView!
-    
     @IBOutlet weak var commentField: UITextField!
     
     var desc: String!
-    var messageArray = [String]()
-    var dateArray = [String]()
+    var commentData = [FirebaseData]()
+    var userData: FirebaseData!
+    var urls: String! = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +28,12 @@ class CommentsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 //        descLbl.text = desc
         
         tableview.rowHeight = UITableViewAutomaticDimension
-        tableview.estimatedRowHeight = 140
+        tableview.estimatedRowHeight = 100
 
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -37,16 +41,15 @@ class CommentsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messageArray.count
+        return commentData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableview.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath) as! CommentsCell
         
-        let eachComment = messageArray[indexPath.row]
-        let eachDate = dateArray[indexPath.row]
-        cell.dateLbl.text = eachDate
-        cell.commentField.text = eachComment
+        let commentData = self.commentData[indexPath.row]
+        
+        cell.configureCommentCell(data: commentData)
         
         return cell
     }
@@ -69,11 +72,14 @@ class CommentsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         let date = NSDate().timeIntervalSince1970
         let currentDate = dateFormatter(timeInterval: date)
+        let imgUrl = DataServices.ds.userImageUrl
+        let name = DataServices.ds.loggedInUsername
         
         let commentInfo: Dictionary<String, String> = [
             "date" : currentDate,
             "message": commentField.text!,
-            "postedBy": USER_ID!
+            "postedBy": name!,
+            "posterImageUrl" : imgUrl!
         ]
         
         ref.childByAutoId().setValue(commentInfo)
@@ -84,16 +90,18 @@ class CommentsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let ref = BASE_URL.child("Comments").child(desc)
         ref.observe(.value, with: { (snapshot) in
             if snapshot.exists() {
-                self.messageArray = []
+                self.commentData = []
                 let allComments = snapshot.children
                 for comment in allComments {
                     let data = comment as! FIRDataSnapshot
                     let commentInfo = data.value as? Dictionary<String, String>
-                    let mess = commentInfo?["message"]
-                    let dateTime = commentInfo?["date"]
-                    self.dateArray.append(dateTime!)
-                    self.messageArray.append(mess!)
-
+                    let allData = FirebaseData(commentData: commentInfo!)
+                    self.commentData.append(allData)
+//                    let mess = commentInfo?["message"]
+//                    let dateTime = commentInfo?["date"]
+//                    if let img = commentInfo?["posterImageUrl"] {
+//                        self.urls = img
+//                    }
                 }
                 self.tableview.reloadData()
             } else {

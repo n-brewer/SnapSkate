@@ -62,7 +62,8 @@ class DetailVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     }
     
     @IBAction func backBtnTapped(_ sender: UIButton) {
-        performSegue(withIdentifier: "backToMap", sender: self)
+//        performSegue(withIdentifier: "backToMap", sender: self)
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func seePicsTapped(_ sender: UIButton) {
@@ -99,8 +100,9 @@ class DetailVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     
     func storeImageToFirebase(image: UIImage) {
         var data = Data()
+        let uuid = NSUUID().uuidString
         data = UIImageJPEGRepresentation(image, 0.8)!
-        let filePath = STORAGE_URL.child("skateSpotImages").child((self.annotationDetails?.uniqueId)!).child("\(numberOfUploads!)")
+        let filePath = STORAGE_URL.child("skateSpotImages").child((self.annotationDetails?.uniqueId)!).child(uuid)
         let metaData = FIRStorageMetadata()
         metaData.contentType = "image/jpeg"
 
@@ -109,7 +111,7 @@ class DetailVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
                 print(error.localizedDescription)
                 return
             } else {
-                self.addToUploadCount()
+//                self.addToUploadCount()
                 let downloadUrl = metadata!.downloadURL()!.absoluteString
                 let imageDict: Dictionary<String, String> = ["imageUrl": downloadUrl]
                 BASE_URL.child("skateSpotImages").child((self.annotationDetails?.uniqueId)!).childByAutoId().setValue(imageDict)
@@ -117,11 +119,11 @@ class DetailVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         }
     }
     
-    func addToUploadCount() {
-        let ref = BASE_URL.child("uploadCount")
-        let newCount = (numberOfUploads! + 1)
-        let update = ["count" : newCount]
-        ref.updateChildValues(update)
-    }
+//    func addToUploadCount() {
+//        let ref = BASE_URL.child("uploadCount")
+//        let newCount = (numberOfUploads! + 1)
+//        let update = ["count" : newCount]
+//        ref.updateChildValues(update)
+//    }
 
 }

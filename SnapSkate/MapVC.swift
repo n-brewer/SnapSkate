@@ -22,12 +22,17 @@ class MapVC: UIViewController, CLLocationManagerDelegate {
     var currentLocationCoords: CLLocation!
     var skateSpotList = [SkateSpot]()
     var selectedAnnotation: SkateSpot?
+    var pinCount: Int! = 0
 //    var testSpot: SkateSpot!
     
 //    let eachSpot = SkateSpotList().spot
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if pinCount <= 0 {
+            pinCount = 0
+        }
         
         print("GGGGGG\(numberOfUploads)")
 //        print("TEST\(skateSpotList)")
@@ -92,10 +97,12 @@ class MapVC: UIViewController, CLLocationManagerDelegate {
             let newTitle = alert.textFields?[0].text
             let newSpot = alert.textFields?[1].text
             
+            let name = DataServices.ds.loggedInUsername
+            
             let ref = BASE_URL.child("skateSpots").childByAutoId()
             let skateData: Dictionary<String, AnyObject> = [
                 "skateType" : "Stairs" as AnyObject,
-                "postedBy" : USER_ID! as AnyObject,
+                "postedBy" : name! as AnyObject,
                 "title" : newTitle! as AnyObject,
                 "location" : newSpot! as AnyObject,
                 "latitude" : self.currentLocationCoords.coordinate.latitude as AnyObject,
@@ -105,6 +112,7 @@ class MapVC: UIViewController, CLLocationManagerDelegate {
             ]
             
             ref.setValue(skateData)
+            self.addSkateSpotToUserCount()
             
 //            let newSkateSpot = SkateSpot(title: newTitle!, locationName: newSpot!, discipline: "stair", imageUrl: "", coordinate: self.currentLocationCoords.coordinate)
 //            print(self.currentLocationCoords.coordinate)
@@ -152,6 +160,16 @@ class MapVC: UIViewController, CLLocationManagerDelegate {
         }) { (error) in
             print(error.localizedDescription)
         }
+    }
+    
+    func addSkateSpotToUserCount() {
+        let ref = BASE_URL.child("Users").child(USER_ID!)
+        let count = DataServices.ds.userPinCount
+        let newCount: Int = count! + 1
+        let newCountDict:Dictionary<String, String> = [
+            "skatePinCount" : "\(newCount)"
+        ]
+        ref.updateChildValues(newCountDict)
     }
 
 }

@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FIRApp.configure()
         IQKeyboardManager.sharedManager().enable = true
 //        DataServices.ds.grabUploadCount()
+        DataServices.ds.findFriends()
         return true
     }
 

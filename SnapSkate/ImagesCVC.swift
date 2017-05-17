@@ -96,6 +96,7 @@ class ImagesCVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         let ref = BASE_URL.child("skateSpotImages").child(chosenSpot)
         ref.observe(.value, with: { (snapshot) in
             if snapshot.exists() {
+                self.picturesArray = []
                 let allImages = snapshot.children
                 print("ALL IMAGES \(allImages)")
                 

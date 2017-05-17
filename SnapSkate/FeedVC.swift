@@ -63,7 +63,13 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let pickedRow = feedDetails[rowInArray]
         let followId = pickedRow.userId
         
-        followThis(person: followId)
+        if sender.backgroundColor != UIColor.green {
+            self.addFollowCount()
+            followThis(person: followId)
+        } else {
+            self.subtractFollowCount()
+            self.removeFollowingThis(person: followId)
+        }
         
         print(followId)
     }
@@ -79,6 +85,33 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableview.reloadData()
     }
     
+    func removeFollowingThis(person: String) {
+        let ref = BASE_URL.child("Following").child(USER_ID!)
+        
+        ref.child(person).removeValue()
+        tableview.reloadData()
+    }
+    
+    func addFollowCount() {
+        let ref = BASE_URL.child("Users").child(USER_ID!)
+        let count = DataServices.ds.userFollowingCount
+        let newCount = count! + 1
+        let followCountDict: Dictionary<String, String> = [
+            "followingCount" : "\(newCount)"
+        ]
+        ref.updateChildValues(followCountDict)
+    }
+    
+    func subtractFollowCount() {
+        let ref = BASE_URL.child("Users").child(USER_ID!)
+        let count = DataServices.ds.userFollowingCount
+        let newCount = count! - 1
+        let followCountDict: Dictionary<String, String> = [
+            "followingCount" : "\(newCount)"
+        ]
+        ref.updateChildValues(followCountDict)
+    }
+    
     func checkForFollowing(who: String, buttonStatus: UIButton) {
         let ref = BASE_URL.child("Following").child(USER_ID!)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -86,9 +119,12 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 print("TTT")
                 buttonStatus.backgroundColor = UIColor.green
                 buttonStatus.setTitle("Following", for: .normal)
+                buttonStatus.setImage(nil, for: .normal)
             } else {
                 print("NNN")
-                buttonStatus.backgroundColor = UIColor.red
+                buttonStatus.backgroundColor = UIColor.clear
+                let img = UIImage(named: "FollowLogo")
+                buttonStatus.setImage(img, for: .normal)
             }
         })
     }

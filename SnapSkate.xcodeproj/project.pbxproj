@@ -8,11 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		6DAD91DA5727FDE66E91AB0F /* Pods_SnapSkate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A06D9E761526FC3F301950A /* Pods_SnapSkate.framework */; };
+		C6065F471ECA20A00049222D /* FriendsMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6065F461ECA20A00049222D /* FriendsMap.swift */; };
+		C6065F491ECA71430049222D /* ProfileAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6065F481ECA71430049222D /* ProfileAction.swift */; };
+		C6065F4B1ECA7D770049222D /* MapAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6065F4A1ECA7D770049222D /* MapAction.swift */; };
+		C6065F4D1ECA86900049222D /* FeedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6065F4C1ECA86900049222D /* FeedAction.swift */; };
 		C61E1D911E95C0E900D556B5 /* PostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61E1D901E95C0E900D556B5 /* PostVC.swift */; };
 		C63369AA1E748D8D00214851 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63369A91E748D8D00214851 /* LoginVC.swift */; };
 		C63369AE1E74ED2000214851 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63369AD1E74ED2000214851 /* ProfileVC.swift */; };
+		C63915F81EC69CFA0009BB2E /* FriendListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63915F71EC69CFA0009BB2E /* FriendListVC.swift */; };
+		C63915FA1EC69F560009BB2E /* FriendListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63915F91EC69F560009BB2E /* FriendListCell.swift */; };
 		C63A5E1D1E971EFC00CC21F7 /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A5E1C1E971EFC00CC21F7 /* FeedVC.swift */; };
 		C63A5E1F1E9B00EF00CC21F7 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63A5E1E1E9B00EF00CC21F7 /* FeedCell.swift */; };
+		C64273E91EC802B300507C93 /* FriendProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64273E81EC802B300507C93 /* FriendProfileVC.swift */; };
+		C64273EB1EC8BDAF00507C93 /* ProfileButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64273EA1EC8BDAF00507C93 /* ProfileButtonDesign.swift */; };
 		C662177A1EC2C311001FDF46 /* CommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66217791EC2C310001FDF46 /* CommentsCell.swift */; };
 		C6621DE41E764B53005998A9 /* FirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6621DE31E764B53005998A9 /* FirebaseData.swift */; };
 		C663589F1E75A54C0007CCE0 /* IQNSArray+Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66358891E75A54C0007CCE0 /* IQNSArray+Sort.swift */; };
@@ -70,11 +78,19 @@
 /* Begin PBXFileReference section */
 		0545E306E8D15716266B7637 /* Pods-SnapSkate.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapSkate.release.xcconfig"; path = "Pods/Target Support Files/Pods-SnapSkate/Pods-SnapSkate.release.xcconfig"; sourceTree = "<group>"; };
 		0A06D9E761526FC3F301950A /* Pods_SnapSkate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapSkate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6065F461ECA20A00049222D /* FriendsMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsMap.swift; sourceTree = "<group>"; };
+		C6065F481ECA71430049222D /* ProfileAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileAction.swift; sourceTree = "<group>"; };
+		C6065F4A1ECA7D770049222D /* MapAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapAction.swift; sourceTree = "<group>"; };
+		C6065F4C1ECA86900049222D /* FeedAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedAction.swift; sourceTree = "<group>"; };
 		C61E1D901E95C0E900D556B5 /* PostVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostVC.swift; sourceTree = "<group>"; };
 		C63369A91E748D8D00214851 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		C63369AD1E74ED2000214851 /* ProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
+		C63915F71EC69CFA0009BB2E /* FriendListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendListVC.swift; sourceTree = "<group>"; };
+		C63915F91EC69F560009BB2E /* FriendListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendListCell.swift; sourceTree = "<group>"; };
 		C63A5E1C1E971EFC00CC21F7 /* FeedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
 		C63A5E1E1E9B00EF00CC21F7 /* FeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
+		C64273E81EC802B300507C93 /* FriendProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendProfileVC.swift; sourceTree = "<group>"; };
+		C64273EA1EC8BDAF00507C93 /* ProfileButtonDesign.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileButtonDesign.swift; sourceTree = "<group>"; };
 		C66217791EC2C310001FDF46 /* CommentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsCell.swift; sourceTree = "<group>"; };
 		C6621DE31E764B53005998A9 /* FirebaseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseData.swift; sourceTree = "<group>"; };
 		C66358891E75A54C0007CCE0 /* IQNSArray+Sort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQNSArray+Sort.swift"; sourceTree = "<group>"; };
@@ -183,6 +199,11 @@
 				C6B88CD51E86F78100DA40DA /* ImagesCell.swift */,
 				C63A5E1E1E9B00EF00CC21F7 /* FeedCell.swift */,
 				C66217791EC2C310001FDF46 /* CommentsCell.swift */,
+				C63915F91EC69F560009BB2E /* FriendListCell.swift */,
+				C64273EA1EC8BDAF00507C93 /* ProfileButtonDesign.swift */,
+				C6065F481ECA71430049222D /* ProfileAction.swift */,
+				C6065F4A1ECA7D770049222D /* MapAction.swift */,
+				C6065F4C1ECA86900049222D /* FeedAction.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -200,6 +221,9 @@
 				C61E1D901E95C0E900D556B5 /* PostVC.swift */,
 				C63A5E1C1E971EFC00CC21F7 /* FeedVC.swift */,
 				C6F4FFB01EC160A8002A6F43 /* CommentsVC.swift */,
+				C63915F71EC69CFA0009BB2E /* FriendListVC.swift */,
+				C64273E81EC802B300507C93 /* FriendProfileVC.swift */,
+				C6065F461ECA20A00049222D /* FriendsMap.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -519,7 +543,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C63915F81EC69CFA0009BB2E /* FriendListVC.swift in Sources */,
 				C66358A41E75A54C0007CCE0 /* IQUIWindow+Hierarchy.swift in Sources */,
+				C64273E91EC802B300507C93 /* FriendProfileVC.swift in Sources */,
 				C66358A01E75A54C0007CCE0 /* IQUIScrollView+Additions.swift in Sources */,
 				C6936B561E72320700A937C9 /* DetailVC.swift in Sources */,
 				C66358A11E75A54C0007CCE0 /* IQUITextFieldView+Additions.swift in Sources */,
@@ -530,23 +556,29 @@
 				C6936B541E70EFB100A937C9 /* MapViewVC.swift in Sources */,
 				C66358A71E75A54C0007CCE0 /* IQKeyboardManager.swift in Sources */,
 				C6F4FFB11EC160A8002A6F43 /* CommentsVC.swift in Sources */,
+				C63915FA1EC69F560009BB2E /* FriendListCell.swift in Sources */,
 				C63369AE1E74ED2000214851 /* ProfileVC.swift in Sources */,
 				C66358AC1E75A54C0007CCE0 /* IQTitleBarButtonItem.swift in Sources */,
 				C63A5E1D1E971EFC00CC21F7 /* FeedVC.swift in Sources */,
 				C61E1D911E95C0E900D556B5 /* PostVC.swift in Sources */,
 				C6B88CD81E86F7C300DA40DA /* ImagesCVC.swift in Sources */,
 				C66358AA1E75A54C0007CCE0 /* IQBarButtonItem.swift in Sources */,
+				C6065F471ECA20A00049222D /* FriendsMap.swift in Sources */,
 				C63369AA1E748D8D00214851 /* LoginVC.swift in Sources */,
+				C6065F4B1ECA7D770049222D /* MapAction.swift in Sources */,
 				C66358AE1E75A54C0007CCE0 /* IQUIView+IQKeyboardToolbar.swift in Sources */,
 				C66358A21E75A54C0007CCE0 /* IQUIView+Hierarchy.swift in Sources */,
 				C6936B521E70EAC300A937C9 /* SkateSpot.swift in Sources */,
 				C663589F1E75A54C0007CCE0 /* IQNSArray+Sort.swift in Sources */,
+				C64273EB1EC8BDAF00507C93 /* ProfileButtonDesign.swift in Sources */,
 				C6621DE41E764B53005998A9 /* FirebaseData.swift in Sources */,
 				C63A5E1F1E9B00EF00CC21F7 /* FeedCell.swift in Sources */,
 				C66358A31E75A54C0007CCE0 /* IQUIViewController+Additions.swift in Sources */,
 				C66358A51E75A54C0007CCE0 /* IQKeyboardManagerConstants.swift in Sources */,
 				C6CEC80D1E74848500643992 /* DataServices.swift in Sources */,
+				C6065F491ECA71430049222D /* ProfileAction.swift in Sources */,
 				C6936B261E6F9ED100A937C9 /* MapVC.swift in Sources */,
+				C6065F4D1ECA86900049222D /* FeedAction.swift in Sources */,
 				C662177A1EC2C311001FDF46 /* CommentsCell.swift in Sources */,
 				C66358A81E75A54C0007CCE0 /* IQKeyboardReturnKeyHandler.swift in Sources */,
 				C6936B241E6F9ED100A937C9 /* AppDelegate.swift in Sources */,

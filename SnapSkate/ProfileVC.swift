@@ -17,8 +17,13 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UIImagePicker
     @IBOutlet weak var userHobby: UILabel!
     @IBOutlet weak var addPicBtn: UIButton!
     
+    @IBOutlet weak var userPinCount: UILabel!
+    @IBOutlet weak var userFollowingCount: UILabel!
+    
     let picker = UIImagePickerController()
     var userPhoto: UIImage!
+    
+    var passThis = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +65,40 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UIImagePicker
         performSegue(withIdentifier: "makePost", sender: self)
     }
     
+    @IBAction func goToCrew(_ sender: UIButton) {
+        performSegue(withIdentifier: "goToFriends", sender: self)
+    }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "goToCrew" {
+//            
+//            let destVc: FriendListVC = segue.destination as! FriendListVC
+//            
+//            let ref = BASE_URL.child("Following").child(USER_ID!)
+//            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+//                let data = snapshot.value as! Dictionary<String, AnyObject>
+//                for key in data {
+//                    let name = key.key
+//                    
+//                    let newRef = BASE_URL.child("Users").child(name)
+//                    newRef.observeSingleEvent(of: .value, with: { (snapshot) in
+//                        let newData = snapshot.value as! Dictionary<String, String>
+//                        let imageUrl = newData["profileImage"]
+//                        let friendName = newData["Username"]
+//                        
+//                        print("DUDE\(friendName!)")
+//                        destVc.friendImageUrls.append(imageUrl!)
+//                        self.passThis.append(friendName!)
+//                        print("BOB \(destVc.friendNames.count)")
+//                    })
+//                }
+//                
+//                destVc.friendNames = self.passThis
+//            })
+//
+//        }
+//    }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         profileImage.image = chosenImage
@@ -80,41 +119,35 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UIImagePicker
         ref.observe(.value, with: { (snapshot) in
             
             if snapshot.hasChild("profileImage") {
-                
-//                let userInfo = snapshot.value as! Dictionary<String, String>
-//                let imageUrl = userInfo["profileImage"]
-//                let realUrl = imageUrl as? NSURL
-                let imageRef = STORAGE_URL.child("users").child(USER_ID!).child("profileImage")
-                imageRef.downloadURL(completion: { (url, error) in
-                    if let error = error {
-                        print(error.localizedDescription)
-                    } else {
-                        let imageUrl = url
-                        self.profileImage.sd_setImage(with: imageUrl)
-                    }
-                })
+
+//                let imageRef = STORAGE_URL.child("users").child(USER_ID!).child("profileImage")
+//                imageRef.downloadURL(completion: { (url, error) in
+//                    if let error = error {
+//                        print(error.localizedDescription)
+//                    } else {
+//                        let imageUrl = url
+//                        self.profileImage.sd_setImage(with: imageUrl)
+//                    }
+//                })
 //
 //                
-//                self.profileImage.sd_setImage(with: imageRef)
-//                let newRef = BASE_URL.child("Users").child(USER_ID!).child("profileImage")
-//                newRef.observeSingleEvent(of: .value, with: { (snapshot) in
-//                    let downloadUrl = snapshot.value as! String
-//                    print("DOWN \(downloadUrl)")
-//                    let storageRef = FIRStorage.storage().reference(forURL: downloadUrl)
-//                    storageRef.data(withMaxSize: 10*1024*1024, completion: { (data, error) in
-//                        
-//                        self.userPhoto = UIImage(data: data!)
-//                        print("DOWN \(self.userPhoto)")
-//                        self.profileImage.image = self.userPhoto
-//                    })
-//                })
+                let picData = snapshot.value as? Dictionary<String, String>
+                print("DATA: \(picData)")
+                let userData = FirebaseData(profileData: picData!)
+                if let imgUrl = picData?["profileImage"] {
+                    DataServices.ds.userImageUrl = imgUrl
+                    self.profileImage.loadImageFromCache(urlString: imgUrl)
+                }
+                self.userHobby.text = userData.userHobby
+                self.userName.text = userData.userName
+                self.userPinCount.text = "\(userData.pinCount) \n Pins"
+                self.userFollowingCount.text = "\(userData.followingCount) \n Following"
+                DataServices.ds.loggedInUsername = userData.userName
+                DataServices.ds.userPinCount = Int(userData.pinCount)
+                DataServices.ds.userFollowingCount = Int(userData.followingCount)
+
             }
             
-            let picData = snapshot.value as? Dictionary<String, String>
-            print("DATA: \(picData)")
-            let userData = FirebaseData(profileData: picData!)
-            self.userHobby.text = userData.userHobby
-            self.userName.text = userData.userName
         })
         
         completed()
@@ -122,8 +155,9 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UIImagePicker
     
     func storeImageToFirebase(image: UIImage) {
         var data = Data()
+        let uuid = NSUUID().uuidString
         data = UIImageJPEGRepresentation(image, 0.8)!
-        let filePath = STORAGE_URL.child("users").child(USER_ID!).child("profileImage")
+        let filePath = STORAGE_URL.child("users").child(USER_ID!).child("profileImage").child(uuid)
         let metaData = FIRStorageMetadata()
         metaData.contentType = "image/jpeg"
         
