@@ -34,6 +34,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UIImagePicker
             addPicBtn.setTitle("", for: .normal)
             addPicBtn.backgroundColor = .clear
         }
+        DataServices.ds.findFriends()
 //        grabPostInfo {
 //            print("DONE")
 //        }

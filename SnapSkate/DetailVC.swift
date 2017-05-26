@@ -10,6 +10,8 @@ import UIKit
 import MapKit
 import Firebase
 import FirebaseStorage
+import AVFoundation
+import AVKit
 
 class DetailVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -23,6 +25,7 @@ class DetailVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     let picker = UIImagePickerController()
     var dataToTransfer: String!
     var picScene = ImagesCVC()
+    var myVidUrl: URL!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,18 +46,48 @@ class DetailVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let imagePicked = info[UIImagePickerControllerOriginalImage] as! UIImage
-        skateSpotImage.image = imagePicked
+        if let imagePicked = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            skateSpotImage.image = imagePicked
+            
+            storeImageToFirebase(image: imagePicked)
+            dismiss(animated: true, completion: nil)
+        }
         
-        storeImageToFirebase(image: imagePicked)
+        if let videoUrl = info[UIImagePickerControllerMediaURL] as? NSURL {
+            print(videoUrl)
+            
+            do {
+                let asset = AVURLAsset(url: videoUrl as URL)
+                let imgGen = AVAssetImageGenerator(asset: asset)
+                imgGen.appliesPreferredTrackTransform = true
+                let stillFrame =  try imgGen.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+                let thumbnail = UIImage(cgImage: stillFrame)
+                self.myVidUrl = videoUrl as URL!
+                skateSpotImage.image = thumbnail
+                
+            } catch let error {
+                print(error.localizedDescription)
+            }
+            
+            storeVideoToFirebase(vidUrl: self.myVidUrl)
+            dismiss(animated: true, completion: nil)
+            let player = AVPlayer(url: myVidUrl)
+            let playerController = AVPlayerViewController()
+            playerController.player = player
+            self.present(playerController, animated: true, completion: {
+                playerController.player?.play()
+            })
+
+        }
         
-        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func addPicBtnTapped(_ sender: UIButton) {
         picker.allowsEditing = false
         picker.sourceType = .photoLibrary
-        picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+//        picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+        picker.mediaTypes = ["public.image" , "public.movie"]
+//        picker.mediaTypes = [kCVBufferMovieTimeKey as String]
         addPicBtn.setTitle("", for: .normal)
         addPicBtn.backgroundColor = .clear
         present(picker, animated: true, completion: nil)
@@ -87,7 +120,7 @@ class DetailVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
                 let storageRef = STORAGE_URL.child("skateSpotImages").child((self.annotationDetails?.uniqueId)!)
                 storageRef.downloadURL(completion: { (url, error) in
                     if let er = error {
-                        print(er.localizedDescription)
+                        print("OOPS \(er.localizedDescription)")
                     } else {
                         let imageUrl = url
                         print("\(imageUrl)")
@@ -119,11 +152,24 @@ class DetailVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         }
     }
     
-//    func addToUploadCount() {
-//        let ref = BASE_URL.child("uploadCount")
-//        let newCount = (numberOfUploads! + 1)
-//        let update = ["count" : newCount]
-//        ref.updateChildValues(update)
-//    }
+    func storeVideoToFirebase(vidUrl: URL) {
 
+        let uuid = NSUUID().uuidString
+        let filePath = STORAGE_URL.child("skateSpotImages").child((self.annotationDetails?.uniqueId)!).child(uuid)
+        let metaData = FIRStorageMetadata()
+        filePath.putFile(vidUrl, metadata: metaData) { (metadata, error) in
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            } else {
+                let downloadUrl = metadata?.downloadURL()?.absoluteString
+                let videoDict: Dictionary<String, String> = [
+                    "videoUrl" : downloadUrl!
+                ]
+                BASE_URL.child("skateSpotImages").child((self.annotationDetails?.uniqueId)!).childByAutoId().setValue(videoDict)
+            }
+        }
+    }
+    
 }

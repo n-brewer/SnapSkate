@@ -16,6 +16,7 @@ class SkateSpot: NSObject, MKAnnotation {
     var locationName: String = ""
     var discipline: String = ""
     var imageUrl: String = ""
+    var videoUrl: String = ""
     var lat: CLLocationDegrees = 0.0
     var long: CLLocationDegrees = 0.0
     var postedByUser: String = ""
@@ -42,8 +43,12 @@ class SkateSpot: NSObject, MKAnnotation {
     }
     
     init(imgUrlDict: Dictionary<String, String>) {
-        let imgUrl = imgUrlDict["imageUrl"]
-        self.imageUrl = imgUrl!
+        if let imgUrl = imgUrlDict["imageUrl"] {
+            self.imageUrl = imgUrl
+        }
+        if let vidUrl = imgUrlDict["videoUrl"] {
+            self.videoUrl = vidUrl
+        }
     }
     
 //    init(title: String, locationName: String, discipline: String, imageUrl: String, lat: CLLocationDegrees, long: CLLocationDegrees, postedBy: String) {

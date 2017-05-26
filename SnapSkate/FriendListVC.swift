@@ -27,7 +27,7 @@ class FriendListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         tableview.dataSource = self
         tableview.delegate = self
         
-        DataServices.ds.findFriends()
+//        DataServices.ds.findFriends()
 
 //        findFriends {
             print("ZZZ \(DataServices.ds.friendInfo.count)")

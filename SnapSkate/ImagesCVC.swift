@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 import FirebaseStorage
+import AVFoundation
+import AVKit
 
 private let reuseIdentifier = "imageCell"
 
@@ -106,14 +108,36 @@ class ImagesCVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
                     let value = data.value as! Dictionary<String, String>
 ////                    let id = data.key
                     let imageUrl = SkateSpot(imgUrlDict: value)
-                    let urlString = imageUrl.imageUrl
-                    print("VALUE \(urlString)")
-//                    let storageRef = FIRStorage.storage().reference(forURL: url)
+                    let vidUrlString = imageUrl.videoUrl
+//                    let vidToUrl: URL = URL(string: vidUrlString)!
+                    print("VALUE \(vidUrlString)")
+                    if vidUrlString != "" {
+                        let storageRef = FIRStorage.storage().reference(forURL: vidUrlString)
+                        storageRef.downloadURL(completion: { (url, error) in
+                            if let error = error {
+                                print(error.localizedDescription)
+                            } else {
+                                self.getStillFrame(fromUrl: url!)
+                                let player = AVPlayer(url: url!)
+                                let playerController = AVPlayerViewController()
+                                playerController.player = player
+                                self.present(playerController, animated: true, completion: {
+                                    playerController.player?.play()
+                                })
+                                self.collectionView.reloadData()
+                                print("MOVIE \(url)")
+                            }
+                        })
+
+                    }
                     
-                    let url = URL(string: urlString)
-                    let imageData = NSData(contentsOf: url!)
-                    let pic = UIImage(data: imageData as! Data)
-                    self.picturesArray.append(pic!)
+                    let urlString = imageUrl.imageUrl
+                    if let url = URL(string: urlString) {
+                        let imageData = NSData(contentsOf: url)
+                        let pic = UIImage(data: imageData as! Data)
+                        self.picturesArray.append(pic!)
+                    }
+                    
 //                    storageRef.data(withMaxSize: 1 * 2024 * 2024, completion: { (data, error) in
 //                        if error != nil {
 //                            print(error?.localizedDescription)
@@ -134,13 +158,19 @@ class ImagesCVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         })
     }
     
-    func downloadImageFromFirebase() {
-        let ref = BASE_URL.child("skateSpotImages").child(chosenSpot)
-        ref.observe(.value, with: { (snapshot) in
-            if snapshot.exists() {
-                
-            }
-        })
+    func getStillFrame(fromUrl: URL) {
+        do {
+            let asset = AVURLAsset(url: fromUrl)
+            let imgGen = AVAssetImageGenerator(asset: asset)
+            imgGen.appliesPreferredTrackTransform = true
+            let stillFrame =  try imgGen.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+            let thumbnail = UIImage(cgImage: stillFrame)
+//            self.myVidUrl = videoUrl as URL!
+            self.picturesArray.append(thumbnail)
+            
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
     
     func fullSizeImage(img: UIImage) {
